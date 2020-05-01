@@ -1,0 +1,82 @@
+<!--https://www.websocket.org/echo.html-->
+
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>웹소켓 테스트 1 </title>
+<script language="javascript" type="text/javascript">
+
+
+//var wsUri = "ws://localhost:3000";
+var wsUri = "wss://echo.websocket.org";
+var output;
+
+function init(){
+    output = document.getElementById("output");
+    InitWS();
+}
+
+function InitWS(){
+	websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(evt){
+	writeToScreen("접속성공");
+	doSend("connected");
+}
+
+function onClose(evt){
+	writeToScreen("접속해제");
+}
+
+function onMessage(evt){
+	writeToScreen('<span style="color : blue;"> 수신 : '+ evt.data+ ' </span>');
+	websocket.close();
+}
+
+function onError(evt)
+{
+	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+
+function doSend(message){
+	writeToScreen("송신 : "+ message);
+	websocket.send(message);
+}
+
+function writeToScreen(message)
+{
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  output.appendChild(pre);
+}
+window.addEventListener("load", init, false);
+
+
+
+  </script>
+
+<div id="output"></div>
+
+<div id="echo-config" style="float: left;">
+   <strong>Location:</strong><br>
+    <input class="draw-border" id="wsUri" size="35">
+    <br>
+	
+    <!-- <input class="draw-border echo-checkbox" type="checkbox" id="secureCb" onClick="toggleTls();"><br>
+    <span id="secureCbLabel" style="font-size: smaller; color: black;">Use secure WebSocket (TLS)</span><br> -->
+    <button class="echo-button" id="connect">Connect</button>
+    <button class="echo-button" id="disconnect">Disconnect</button>
+    <br>
+    <br>
+    <strong>Message:</strong><br>
+    <input class="draw-border" id="sendMessage" size="35" value="Rock it with HTML5 WebSocket">
+    <br>
+    <button class="echo-button" id="send" class="wsButton">Send</button>
+</div>
+
