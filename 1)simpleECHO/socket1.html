@@ -1,0 +1,64 @@
+<!--https://www.websocket.org/echo.html-->
+
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>웹소켓 테스트 1 </title>
+<script language="javascript" type="text/javascript">
+
+
+var wsUri = "wss://echo.websocket.org";
+var output;
+
+function init(){
+    output = document.getElementById("output");
+    InitWS();
+}
+
+function InitWS(){
+	websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) { onOpen(evt) };
+    websocket.onclose = function(evt) { onClose(evt) };
+    websocket.onmessage = function(evt) { onMessage(evt) };
+    websocket.onerror = function(evt) { onError(evt) };
+}
+
+function onOpen(evt){
+	writeToScreen("접속성공");
+	doSend("connected");
+}
+
+function onClose(evt){
+	writeToScreen("접속해제");
+}
+
+function onMessage(evt){
+	writeToScreen('<span style="color : blue;"> 수신 : '+ evt.data+ ' </span>');
+	websocket.close();
+}
+
+function onError(evt)
+{
+	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+
+function doSend(message){
+	writeToScreen("송신 :"+ message);
+	websocket.send(message);
+}
+
+function writeToScreen(message)
+{
+  var pre = document.createElement("p");
+  pre.style.wordWrap = "break-word";
+  pre.innerHTML = message;
+  output.appendChild(pre);
+}
+window.addEventListener("load", init, false);
+
+
+
+  </script>
+
+  <div id="output"></div>
+
