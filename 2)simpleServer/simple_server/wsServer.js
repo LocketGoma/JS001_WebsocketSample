@@ -1,3 +1,4 @@
+//https://nicgoon.tistory.com/235
 const WebSocketModule = require ("ws");
 
 module.exports = function(_server){
