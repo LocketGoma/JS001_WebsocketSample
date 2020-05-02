@@ -6,9 +6,10 @@
 <script language="javascript" type="text/javascript">
 
 
-//var wsUri = "ws://localhost:3000";
-var wsUri = "wss://echo.websocket.org";
+var wsUri = "ws://localhost:3000";
+//var wsUri = "wss://echo.websocket.org";
 var output;
+var ID;
 
 function init(){
     output = document.getElementById("output");
@@ -21,6 +22,8 @@ function InitWS(){
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };
     websocket.onerror = function(evt) { onError(evt) };
+	
+	InputListener();
 }
 
 function onOpen(evt){
@@ -34,15 +37,22 @@ function onClose(evt){
 
 function onMessage(evt){
 	writeToScreen('<span style="color : blue;"> 수신 : '+ evt.data+ ' </span>');
-	websocket.close();
+	//websocket.close();
 }
-
 function onError(evt)
 {
 	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
 }
 
-
+function InputListener(){
+		//message reader
+	var sendButton = document.getElementById('sendButton');
+	
+	var textBox = document.getElementById('sendMessage');
+		if (textBox !== null){
+		doSend(textBox.value);		
+	}	
+}
 function doSend(message){
 	writeToScreen("송신 : "+ message);
 	websocket.send(message);
@@ -63,20 +73,21 @@ window.addEventListener("load", init, false);
 
 <div id="output"></div>
 
+<body>
 <div id="echo-config" style="float: left;">
+   <!--
    <strong>Location:</strong><br>
     <input class="draw-border" id="wsUri" size="35">
-    <br>
-	
-    <!-- <input class="draw-border echo-checkbox" type="checkbox" id="secureCb" onClick="toggleTls();"><br>
-    <span id="secureCbLabel" style="font-size: smaller; color: black;">Use secure WebSocket (TLS)</span><br> -->
+    <br>	
     <button class="echo-button" id="connect">Connect</button>
     <button class="echo-button" id="disconnect">Disconnect</button>
     <br>
+	-->
     <br>
     <strong>Message:</strong><br>
-    <input class="draw-border" id="sendMessage" size="35" value="Rock it with HTML5 WebSocket">
+    <input class="draw-border" id="sendMessage" size="35" value="Hello World Node.js">
     <br>
-    <button class="echo-button" id="send" class="wsButton">Send</button>
+    <!--<button class="echo-button" id="sendButton" class="wsButton" >Send</button> -->
+	<input class="send-button" type="button" value="Send" id="sendButton" class="wsButton" onclick="InputListener()">
 </div>
-
+</body>
