@@ -6,10 +6,8 @@
 1) bin/www 폴더에 js 파일 링킹 
 
 (링킹 방법 :
-
-const webSocket = require("../wsServer");
-
-webSocket(server); )
+const webSocket = require("../wsServer"); 
+ webSocket(server); ) 을 WWW 파일에 입력. 
 
 
 2) js 파일 위치에서 node.js 터미널 실행
